@@ -1,0 +1,9 @@
+---
+# handlers file for sa-jumpbox-sslh
+
+- name: Restart sslh
+  service:
+    name: sslh.service
+    state: restarted
+  become: yes
+

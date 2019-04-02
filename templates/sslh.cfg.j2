@@ -1,0 +1,20 @@
+verbose: false;
+foreground: true;
+timeout: 5;
+user: "sslh";
+pidfile: "{{ sslh_pid_file }}";
+
+listen:
+(
+    { host: "{{ sslh_ip_address }}"; port: "443"; }
+);
+
+protocols:
+(
+     { name: "ssh";     host: "127.0.0.1"; port: "{{ sslh_ssh_port }}";     probe: "builtin"; fork: true; },
+     { name: "tls";     host: "127.0.0.1"; port: "{{ sslh_nginx_port}}";    probe: "builtin"; },
+     { name: "openvpn"; host: "127.0.0.1"; port: "{{ sslh_openvpn_port }}"; probe: "builtin"; },
+     { name: "anyprot"; host: "127.0.0.1"; port: "{{ sslh_nginx_port }}";   probe: "builtin"; }
+);
+
+on-timeout: "tls";

@@ -1,0 +1,56 @@
+---
+
+  - name: SSLH | Install package
+    apt:
+      name: sslh
+      state: present
+    become: yes
+    tags:
+      - sslh
+
+  - name: SSLH | Generate defaults file
+    template:
+      src: sslh.default.j2
+      dest: /etc/default/sslh
+    notify: Restart sslh
+    become: yes
+    tags:
+      - sslh
+
+  - name: SSLH | template config file
+    template:
+      src: sslh.cfg.j2
+      dest: /etc/sslh.cfg
+    notify: Restart sslh
+    become: yes
+    tags:
+      - sslh
+
+  - name: SSLH | Create systemd dir
+    file:
+      path: "{{ sslh_systemd_service_path }}"
+      state: directory
+    become: yes
+    tags:
+      - sslh
+
+  - name: SSLH | template systemd service file
+    template:
+      src: sslh.service.j2
+      dest: "{{ sslh_systemd_service_path }}/10-restart-failure.conf"
+      mode: 0644
+    become: yes
+    tags:
+      - sslh
+
+  - name: Enable the sslh service
+    systemd:
+      daemon_reload: yes
+      name: sslh.service
+      enabled: yes
+      state: restarted
+    become: yes
+    when: docker_test is not defined
+    tags:
+      - sslh
+

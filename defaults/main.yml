@@ -1,0 +1,11 @@
+---
+# defaults file for sa-jumpbox-sslh
+
+sslh_pid_file: "/var/run/sslh/sslh.pid"
+sslh_systemd_service_path: "/etc/systemd/system/sslh.service.d"
+
+sslh_ssh_port: 22
+sslh_nginx_port: 8443
+sslh_openvpn_port: 1194
+
+sslh_ip_address: "ansible_default_ipv4.address"
